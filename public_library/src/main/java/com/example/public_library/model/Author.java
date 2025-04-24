@@ -3,8 +3,8 @@ package com.example.public_library.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "db_autor")
-public class Autor {
+@Table(name = "db_author")
+public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class Autor {
     @Column(unique = true)
     private String email;
 
-    public Autor() {}
+    public Author() {}
 
-    public Autor(Long id, String name, String nationality, String biography, String email) {
+    public Author(Long id, String name, String nationality, String biography, String email) {
         this.id = id;
         this.nome = name;
         this.nacionalidade = nationality;

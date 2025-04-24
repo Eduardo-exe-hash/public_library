@@ -1,26 +1,26 @@
 package com.example.public_library.controller;
 
-import com.example.public_library.model.User;
+import com.example.public_library.model.Author;
 import com.example.public_library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/authors")
-public class AutorController {
-    private final AutorService service;
+public class AuthorController {
+    private final AuthorService service;
 
-    public AutorController(AutorService service) {
+    public AuthorController(AutorService service) {
         this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody AutorDTO dto) {
+    public ResponseEntity<?> register(@RequestBody AuthorDTO dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 
     @GetMapping
-    public ResponseEntity<List<AutorDTO>> listAll() {
+    public ResponseEntity<List<AuthorDTO>> listAll() {
         return ResponseEntity.ok(service.listAll());
     }
 
@@ -30,7 +30,7 @@ public class AutorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody AutorDTO dto) {
+    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody AuthorDTO dto) {
         return ResponseEntity.ok(service.edit(id, dto));
     }
 
