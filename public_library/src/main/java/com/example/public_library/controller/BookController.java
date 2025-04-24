@@ -1,5 +1,4 @@
 package com.example.public_library.controller;
-
 import com.example.public_library.model.Book;
 import com.example.public_library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +31,5 @@ public class BookController {
     public Book findAuthor(@RequestParam String author){
         return service.findAuthor(author);
     }
+
 }
