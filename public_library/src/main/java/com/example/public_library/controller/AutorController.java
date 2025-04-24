@@ -1,3 +1,10 @@
+package com.example.public_library.controller;
+
+import com.example.public_library.model.User;
+import com.example.public_library.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/authors")
 public class AutorController {
@@ -13,8 +20,8 @@ public class AutorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AutorDTO>> listarTodos() {
-        return ResponseEntity.ok(service.listarTodos());
+    public ResponseEntity<List<AutorDTO>> listAll() {
+        return ResponseEntity.ok(service.listAll());
     }
 
     @GetMapping("/{id}")
