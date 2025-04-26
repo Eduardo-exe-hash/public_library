@@ -1,0 +1,54 @@
+package com.example.public_library.controller;
+
+import com.example.public_library.model.Reserve;
+import com.example.public_library.service.ReserveService;
+import com.example.public_library.service.SendMailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/reservar")
+public class ReserveController {
+    @Autowired
+    private ReserveService service;
+    @Autowired
+    private SendMailService sendMail;
+    @PostMapping
+    public ResponseEntity<Reserve> makeReserve(@RequestBody Reserve reserve){
+        Reserve newreserve = service.save(reserve);
+        new Thread(()->{
+            try{
+                Thread.sleep(3000);
+                sendMail.sendReserve(reserve.getEmail(), reserve.getNameBook());
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }).start();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newreserve);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Reserve> findById(@PathVariable Long id){
+        Reserve reserve = service.findById(id);
+        if (reserve != null){
+            return ResponseEntity.ok(reserve);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/buscar-livro")
+    public ResponseEntity <Reserve> findByBook(@RequestParam String bookTitle){
+        Reserve reserve = service.findByBook(bookTitle);
+        if (reserve != null){
+            return ResponseEntity.ok(reserve);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+}
+
