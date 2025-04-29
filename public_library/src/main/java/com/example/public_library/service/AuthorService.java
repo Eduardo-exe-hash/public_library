@@ -5,7 +5,7 @@ import br.edu.unichristus.domain.dto.AuthorLowDTO;
 import br.edu.unichristus.domain.dto.AuthorRolesDTO;
 import br.edu.unichristus.domain.model.Author;
 import br.edu.unichristus.exception.CommonsException;
-import br.edu.unichristus.repository.UserRepository;
+import br.edu.unichristus.repository.AuthorRepository;
 import br.edu.unichristus.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,17 +15,17 @@ import java.util.List;
 
 @Service
 public class AuthorService {
-    private final AutorRepository repository;
+    private final AuthorRepository repository;
 
-    public AuthorService(AutorRepository repository) {
+    public AuthorService(AuthorRepository repository) {
         this.repository = repository;
     }
 
-    public AutorDTO create(AutorDTO dto) {
+    public AutorDTO create(AuthorDTO dto) {
         Author author = Author.builder()
-                .nome(dto.getName())
-                .nacionalidade(dto.getNationality())
-                .biografia(dto.getBiography())
+                .name(dto.getName())
+                .nationality(dto.getNationality())
+                .biography(dto.getBiography())
                 .email(dto.getEmail())
                 .build();
         return toDTO(repository.save(author));
@@ -40,7 +40,7 @@ public class AuthorService {
         return toDTO(author);
     }
 
-    public AutorDTO edit(Long id, AutorDTO dto) {
+    public AuthorDTO edit(Long id, AuthorDTO dto) {
         Autor author = repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
         autor.setName(dto.getName());
         autor.setNationality(dto.getNationality());
@@ -53,11 +53,11 @@ public class AuthorService {
         repository.deleteById(id);
     }
 
-    private AutorDTO toDTO(Autor autor) {
-        AutorDTO dto = new AuthorDTO();
-        dto.setNome(autor.getName());
-        dto.setNacionalidade(autor.getNationality());
-        dto.setBiografia(autor.getBiography());
+    private AuthorDTO toDTO(Author author) {
+        AuthorDTO dto = new AuthorDTO();
+        dto.setName(autor.getName());
+        dto.setNationality(autor.getNationality());
+        dto.setBiography(autor.getBiography());
         dto.setEmail(autor.getEmail());
         return dto;
     }
