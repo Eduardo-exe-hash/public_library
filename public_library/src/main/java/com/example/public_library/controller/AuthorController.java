@@ -1,7 +1,7 @@
 package com.example.public_library.controller;
 
 import com.example.public_library.model.Author;
-import com.example.public_library.service.UserService;
+import com.example.public_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthorController {
     private final AuthorService service;
 
-    public AuthorController(AutorService service) {
+    public AuthorController(AuthorService service) {
         this.service = service;
     }
 
