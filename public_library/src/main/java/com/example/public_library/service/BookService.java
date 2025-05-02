@@ -4,6 +4,8 @@ import com.example.public_library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BookService {
     @Autowired
@@ -21,6 +23,9 @@ public class BookService {
     }
     public Book findAuthor(String author){
         return bookRepository.findAuthor(author).orElse(null);
+    }
+    public List<Book> listAll(){
+        return bookRepository.findAll();
     }
 
 }

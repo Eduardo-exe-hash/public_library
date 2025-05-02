@@ -5,6 +5,8 @@ import com.example.public_library.repository.ReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReserveService {
     @Autowired
@@ -13,12 +15,13 @@ public class ReserveService {
     public Reserve save(Reserve reserve){
         return repository.save(reserve);
     }
-
     public Reserve findById(Long id) {
         return repository.findById(id).orElse(null);
     }
-
     public Reserve findByBook(String bookTitle) {
         return repository.findByBook(bookTitle).orElse(null);
+    }
+    public List<Reserve> listAll(){
+        return repository.findAll();
     }
 }
