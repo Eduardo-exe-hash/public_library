@@ -1,6 +1,12 @@
 package com.example.public_library.repository;
 
-import com.seu.pacote.model.Isbn;
+import com.example.public_library.model.Isbn;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IsbnRepository extends JpaRepository<Isbn, Long> {}
+import java.util.List;
+
+@Repository
+public interface IsbnRepository extends JpaRepository<Isbn, Long> {
+    List<Isbn> findByNumberContainingIgnoreCase(String number);
+}
