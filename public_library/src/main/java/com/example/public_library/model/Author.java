@@ -20,9 +20,9 @@ public class Author {
 
     public Author(Long id, String name, String nationality, String biography, String email) {
         this.id = id;
-        this.nome = name;
-        this.nacionalidade = nationality;
-        this.biografia = biography;
+        this.name = name;
+        this.nationality= nationality;
+        this.biography = biography;
         this.email = email;
     }
 
