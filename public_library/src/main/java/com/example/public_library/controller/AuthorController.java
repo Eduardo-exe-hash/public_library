@@ -1,22 +1,34 @@
 package com.example.public_library.controller;
 
-import com.example.public_library.model.Author;
+import com.example.public_library.dto.AuthorDTO;
 import com.example.public_library.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/authors")
-public class AuthorController {
-    private final AuthorService service;
+import java.util.List;
 
-    public AuthorController(AuthorService service) {
-        this.service = service;
-    }
+@RestController
+@RequestMapping("/api/authors")
+public class AuthorController {
+
+    @Autowired
+    private AuthorService service;
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody AuthorDTO dto) {
-        return ResponseEntity.ok(service.create(dto));
+    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<AuthorDTO>> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(service.findByName(name));
     }
 
     @GetMapping
@@ -24,19 +36,14 @@ public class AuthorController {
         return ResponseEntity.ok(service.listAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody AuthorDTO dto) {
-        return ResponseEntity.ok(service.edit(id, dto));
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
