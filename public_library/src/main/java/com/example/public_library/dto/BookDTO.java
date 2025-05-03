@@ -3,11 +3,11 @@ public class BookDTO {
     private int bookCod;
     private String title;
     private String author;
-    private String amount;
+    private int amount;
     public BookDTO(){
 
     }
-    public BookDTO(int bookCod, String title, String author, String amount) {
+    public BookDTO(int bookCod, String title, String author, int amount) {
         this.bookCod = bookCod;
         this.title = title;
         this.author = author;
@@ -38,11 +38,11 @@ public class BookDTO {
         this.author = author;
     }
 
-    public String getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }

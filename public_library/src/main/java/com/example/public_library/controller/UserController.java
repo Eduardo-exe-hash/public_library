@@ -17,7 +17,18 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private UserService service;
-
+    @PostMapping
+    public UserLowDTO save(@RequestBody UserDTO user){
+        return service.save(user);
+    }
+    @PutMapping
+    public UserLowDTO update(@RequestBody UserDTO user){
+        return service.save(user);
+    }
+    @GetMapping("/all")
+    public List<UserLowDTO>findAll(){
+        return service.findAll();
+    }
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id){
         User user = service.findById(id);

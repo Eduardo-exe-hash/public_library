@@ -20,6 +20,7 @@ public class ReserveController {
     private ReserveService service;
     @Autowired
     private SendMailService sendMail;
+
     @PostMapping
     public ResponseEntity<Reserve> makeReserve(@RequestBody ReserveDTO reserveDTO){
         Reserve reserve = new Reserve();

@@ -1,10 +1,8 @@
 package com.example.public_library.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class BookLowDTO {
     private Long id;
-    private String nameBook;
+    private String title;
     private String author;
 
     public Long getId() {
@@ -15,12 +13,12 @@ public class BookLowDTO {
         this.id = id;
     }
 
-    public String getNameBook() {
-        return nameBook;
+    public String getTitle() {
+        return title;
     }
 
-    public void setNameBook(String nameBook) {
-        this.nameBook = nameBook;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {

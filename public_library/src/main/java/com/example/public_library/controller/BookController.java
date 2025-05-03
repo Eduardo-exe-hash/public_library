@@ -1,5 +1,6 @@
 package com.example.public_library.controller;
 import com.example.public_library.dto.BookDTO;
+import com.example.public_library.dto.BookLowDTO;
 import com.example.public_library.model.Book;
 import com.example.public_library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import java.util.List;
 public class BookController {
     @Autowired
     private BookService service;
-
     @PostMapping
     public ResponseEntity<Book> cadlivro(@RequestBody BookDTO bookDTO){
         Book book = new Book();
@@ -40,7 +40,7 @@ public class BookController {
         return service.findAuthor(author);
     }
     @GetMapping
-    public List<Book> listAll(){
-        return service.listAll();
+    public List<BookLowDTO> listAllow(){
+        return service.listAllow();
     }
 }
