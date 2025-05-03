@@ -1,14 +1,9 @@
-package com.example.public_library;
+package com.example.public_library.service;
 
-import br.edu.unichristus.domain.dto.PublisherDTO;
-import br.edu.unichristus.domain.dto.PublisherLowDTO;
-import br.edu.unichristus.domain.dto.PublisherRolesDTO;
-import br.edu.unichristus.domain.model.Publisher;
-import br.edu.unichristus.exception.CommonsException;
-import br.edu.unichristus.repository.PublisherRepository;
-import br.edu.unichristus.utils.MapperUtil;
+import com.example.public_library.dto.PublisherDTO;
+import com.example.public_library.model.Publisher;
+import com.example.public_library.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,54 +11,65 @@ import java.util.List;
 @Service
 public class PublisherService {
 
-    private final PublisherRepository repository;
+    @Autowired
+    private PublisherRepository repository;
 
-    public EditoraService(PublisherRepository repository) {
-        this.repository = repository;
+    public PublisherDTO save(PublisherDTO dto) {
+        Publisher publisher = convertToEntity(dto);
+        return convertToDTO(repository.save(publisher));
     }
 
-    public PublisherDTO criar(PublisherDTO dto) {
-        Publisher publisher = Publisher.builder()
-                .name(dto.getName())
-                .city(dto.getCity())
-                .country(dto.getCountry())
-                .email(dto.getEmail())
-                .build();
-        return toDTO(repository.save(publisher));
+    public PublisherDTO findById(Long id) {
+        return repository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Editora não encontrada"));
+    }
+
+    public List<PublisherDTO> findByName(String name) {
+        return repository.findByNameContainingIgnoreCase(name)
+                .stream().map(this::convertToDTO).toList();
     }
 
     public List<PublisherDTO> listAll() {
-        return repository.findAll().stream().map(this::toDTO).toList();
+        return repository.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public PublisherDTO getById(Long id) {
-        Publisher publisher = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Publisher not found"));
-        return toDTO(editora);
+    public PublisherDTO update(Long id, PublisherDTO dto) {
+        Publisher existingPublisher = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Editora não encontrada"));
+
+        existingPublisher.setName(dto.getName());
+        existingPublisher.setCity(dto.getCity());
+        existingPublisher.setCountry(dto.getCountry());
+        existingPublisher.setEmail(dto.getEmail());
+
+        return convertToDTO(repository.save(existingPublisher));
     }
 
-    public PublisherDTO edit(Long id, PublisherDTO dto) {
-        Publisher publisher = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Publisher not found"));
-
-        publisher.setName(dto.getName());
-        publisher.setCity(dto.getCity());
-        publisher.setCountry(dto.getCountry());
-        publisher.setEmail(dto.getEmail());
-
-        return toDTO(repository.save(publisher));
-    }
-
-    public void delete(Long id) {
+    public void deleteById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Editora não encontrada para deletar");
+        }
         repository.deleteById(id);
     }
 
-    private PublisherDTO toDTO(Publisher publisher) {
+    private PublisherDTO convertToDTO(Publisher publisher) {
         return new PublisherDTO(
+                publisher.getId(),
                 publisher.getName(),
                 publisher.getCity(),
                 publisher.getCountry(),
                 publisher.getEmail()
+        );
+    }
+
+    private Publisher convertToEntity(PublisherDTO dto) {
+        return new Publisher(
+                dto.getId(),
+                dto.getName(),
+                dto.getCity(),
+                dto.getCountry(),
+                dto.getEmail()
         );
     }
 }
