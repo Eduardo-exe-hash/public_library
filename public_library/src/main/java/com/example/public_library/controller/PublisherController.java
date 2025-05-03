@@ -1,8 +1,10 @@
 package com.example.public_library.controller;
 
-import com.example.public_library.model.Publisher;
+import com.example.public_library.dto.PublisherDTO;
 import com.example.public_library.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,35 +13,37 @@ import java.util.List;
 @RequestMapping("/api/publishers")
 public class PublisherController {
 
-    private final PublisherService service;
-
-    public PublisherController(PublisherService service) {
-        this.service = service;
-    }
+    @Autowired
+    private PublisherService service;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody EditoraDTO dto) {
-        return ResponseEntity.ok(service.create(dto));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<PublisherDTO>> listarTodos() {
-        return ResponseEntity.ok(service.listAll());
+    public ResponseEntity<PublisherDTO> createPublisher(@RequestBody PublisherDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<PublisherDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<PublisherDTO>> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(service.findByName(name));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PublisherDTO>> listAll() {
+        return ResponseEntity.ok(service.listAll());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable Long id, @RequestBody PublisherDTO dto) {
-        return ResponseEntity.ok(service.edit(id, dto));
+    public ResponseEntity<PublisherDTO> updatePublisher(@PathVariable Long id, @RequestBody PublisherDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
