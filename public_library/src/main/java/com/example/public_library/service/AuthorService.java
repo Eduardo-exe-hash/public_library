@@ -1,64 +1,75 @@
-package com.example.public_library;
+package com.example.public_library.service;
 
-import br.edu.unichristus.domain.dto.AuthorDTO;
-import br.edu.unichristus.domain.dto.AuthorLowDTO;
-import br.edu.unichristus.domain.dto.AuthorRolesDTO;
-import br.edu.unichristus.domain.model.Author;
-import br.edu.unichristus.exception.CommonsException;
-import br.edu.unichristus.repository.AuthorRepository;
-import br.edu.unichristus.utils.MapperUtil;
+import com.example.public_library.dto.AuthorDTO;
+import com.example.public_library.model.Author;
+import com.example.public_library.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class AuthorService {
-    private final AuthorRepository repository;
 
-    public AuthorService(AuthorRepository repository) {
-        this.repository = repository;
+    @Autowired
+    private AuthorRepository repository;
+
+    public AuthorDTO save(AuthorDTO dto) {
+        Author author = convertToEntity(dto);
+        return convertToDTO(repository.save(author));
     }
 
-    public AutorDTO create(AuthorDTO dto) {
-        Author author = Author.builder()
-                .name(dto.getName())
-                .nationality(dto.getNationality())
-                .biography(dto.getBiography())
-                .email(dto.getEmail())
-                .build();
-        return toDTO(repository.save(author));
+    public AuthorDTO findById(Long id) {
+        return repository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+    }
+
+    public List<AuthorDTO> findByName(String name) {
+        return repository.findByNameContainingIgnoreCase(name)
+                .stream().map(this::convertToDTO).toList();
     }
 
     public List<AuthorDTO> listAll() {
-        return repository.findAll().stream().map(this::toDTO).toList();
+        return repository.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public AuthorDTO getById(Long id) {
-        Author author = repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
-        return toDTO(author);
+    public AuthorDTO update(Long id, AuthorDTO dto) {
+        Author existingAuthor = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Autor não encontrado"));
+
+        existingAuthor.setName(dto.getName());
+        existingAuthor.setNationality(dto.getNationality());
+        existingAuthor.setBiography(dto.getBiography());
+        existingAuthor.setEmail(dto.getEmail());
+
+        return convertToDTO(repository.save(existingAuthor));
     }
 
-    public AuthorDTO edit(Long id, AuthorDTO dto) {
-        Autor author = repository.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
-        autor.setName(dto.getName());
-        autor.setNationality(dto.getNationality());
-        autor.setBiography(dto.getBiography());
-        autor.setEmail(dto.getEmail());
-        return toDTO(repository.save(author));
-    }
-
-    public void delete(Long id) {
+    public void deleteById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Autor não encontrado para deletar");
+        }
         repository.deleteById(id);
     }
 
-    private AuthorDTO toDTO(Author author) {
-        AuthorDTO dto = new AuthorDTO();
-        dto.setName(autor.getName());
-        dto.setNationality(autor.getNationality());
-        dto.setBiography(autor.getBiography());
-        dto.setEmail(autor.getEmail());
-        return dto;
+    private AuthorDTO convertToDTO(Author author) {
+        return new AuthorDTO(
+                author.getId(),
+                author.getName(),
+                author.getNationality(),
+                author.getBiography(),
+                author.getEmail()
+        );
+    }
+
+    private Author convertToEntity(AuthorDTO dto) {
+        return new Author(
+                dto.getId(),
+                dto.getName(),
+                dto.getNationality(),
+                dto.getBiography(),
+                dto.getEmail()
+        );
     }
 }
