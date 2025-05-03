@@ -1,4 +1,4 @@
-package com.example.public_library;
+package com.example.public_library.dto;
 
 import java.util.Objects;
 
@@ -9,22 +9,18 @@ public class AuthorDTO {
     private String biography;
     private String email;
 
-    public Author() {}
+    public AuthorDTO() {}
 
-    public Author(Long id, String name, String nationality, String biography, String email) {
+    public AuthorDTO(Long id, String name, String nationality, String biography, String email) {
         this.id = id;
-        this.nome = name;
+        this.name = name;
         this.nationality = nationality;
-        this.biografia = biography;
+        this.biography = biography;
         this.email = email;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public String getName() {
@@ -37,6 +33,10 @@ public class AuthorDTO {
 
     public String getBiography() {
         return biography;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setId(Long id) {
@@ -62,23 +62,28 @@ public class AuthorDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AuthorDTO author)) return false;
-        return Objects.equals(id, author.id) && Objects.equals(name, author.name) && Objects.equals(email, author.email) && Objects.equals(nationality, author.nationality) && Objects.equals(biography, author.biography);
+        if (!(o instanceof AuthorDTO)) return false;
+        AuthorDTO author = (AuthorDTO) o;
+        return Objects.equals(id, author.id) &&
+                Objects.equals(name, author.name) &&
+                Objects.equals(nationality, author.nationality) &&
+                Objects.equals(biography, author.biography) &&
+                Objects.equals(email, author.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, nationality, biography);
+        return Objects.hash(id, name, nationality, biography, email);
     }
 
     @Override
     public String toString() {
-        return "Author{" +
+        return "AuthorDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", biography='" + biography + '\'' +
                 ", nationality='" + nationality + '\'' +
+                ", biography='" + biography + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
