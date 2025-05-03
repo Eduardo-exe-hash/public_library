@@ -1,77 +1,73 @@
-package com.example.public_library;
+package com.example.public_library.service;
 
-import br.edu.unichristus.domain.dto.IsbnDTO;
-import br.edu.unichristus.domain.dto.IsbnLowDTO;
-import br.edu.unichristus.domain.dto.IsbnRolesDTO;
-import br.edu.unichristus.domain.model.Isbn;
-import br.edu.unichristus.exception.CommonsException;
-import br.edu.unichristus.repositoryIsbnRepository;
-import br.edu.unichristus.utils.MapperUtil;
+import com.example.public_library.dto.IsbnDTO;
+import com.example.public_library.model.Isbn;
+import com.example.public_library.repository.IsbnRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class IsbnService {
-    private final IsbnRepository repository;
 
-    public IsbnService(IsbnRepository repository) {
-        this.repository = repository;
+    @Autowired
+    private IsbnRepository repository;
+
+    public IsbnDTO save(IsbnDTO dto) {
+        Isbn isbn = convertToEntity(dto);
+        return convertToDTO(repository.save(isbn));
     }
 
-    public IsbnDTO criar(IsbnDTO dto) {
-        Isbn isbn = Isbn.builder()
-                .number(dto.getNumber())
-                .edition(dto.getEdition())
-                .yearPublication(dto.getYearPublication())
-                .build();
-        repository.save(isbn);
-        return toDTO(isbn);
+    public IsbnDTO findById(Long id) {
+        return repository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("ISBN não encontrado"));
     }
 
-    public List<IsbnLowDTO> listAll() {
-        return repository.findAll().stream()
-                .map(this::toLowDTO)
-                .collect(Collectors.toList());
+    public List<IsbnDTO> findByNumber(String number) {
+        return repository.findByNumberContainingIgnoreCase(number)
+                .stream().map(this::convertToDTO).toList();
     }
 
-    public IsbnDTO getById(Long id) {
-        Isbn isbn = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ISBN not found"));
-        return toDTO(isbn);
+    public List<IsbnDTO> listAll() {
+        return repository.findAll().stream().map(this::convertToDTO).toList();
     }
 
-    public IsbnDTO edit(Long id, IsbnDTO dto) {
-        Isbn isbn = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ISBN not found"));
-        isbn.setNumber(dto.getNumber());
-        isbn.setEdition(dto.getEdition());
-        isbn.setYearPublication(dto.getYearPublication());
-        repository.save(isbn);
-        return toDTO(isbn);
+    public IsbnDTO update(Long id, IsbnDTO dto) {
+        Isbn existingIsbn = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ISBN não encontrado"));
+
+        existingIsbn.setNumber(dto.getNumber());
+        existingIsbn.setEdition(dto.getEdition());
+        existingIsbn.setYearPublication(dto.getYearPublication());
+        
+        return convertToDTO(repository.save(existingIsbn));
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("ISBN não encontrado para deletar");
+        }
         repository.deleteById(id);
     }
 
-    private IsbnDTO toDTO(Isbn isbn) {
-        IsbnDTO dto = new IsbnDTO();
-        dto.setNumber(isbn.getNumber());
-        dto.setEdition(isbn.getEdition());
-        dto.setYearPublication(isbn.getYearPublication());
-        return dto;
+    private IsbnDTO convertToDTO(Isbn isbn) {
+        return new IsbnDTO(
+                isbn.getId(),
+                isbn.getNumber(),
+                isbn.getEdition(),
+                isbn.getYearPublication(),
+                isbn.getPublisher() != null ? isbn.getPublisher().getId() : null
+        );
     }
 
-    private IsbnLowDTO toLowDTO(Isbn isbn) {
-        IsbnLowDTO dto = new IsbnLowDTO();
-        dto.setId(isbn.getId());
-        dto.setNumber(isbn.getNumber());
-        return dto;
+    private Isbn convertToEntity(IsbnDTO dto) {
+        Isbn isbn = new Isbn();
+        isbn.setId(dto.getId());
+        isbn.setNumber(dto.getNumber());
+        isbn.setEdition(dto.getEdition());
+        isbn.setYearPublication(dto.getYearPublication());
+        return isbn;
     }
 }
