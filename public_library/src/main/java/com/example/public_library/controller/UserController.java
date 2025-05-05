@@ -1,5 +1,10 @@
 package com.example.public_library.controller;
-
+import com.example.public_library.dto.MessageDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import com.example.public_library.dto.UserDTO;
 import com.example.public_library.dto.UserLowDTO;
 import com.example.public_library.model.User;
@@ -25,10 +30,20 @@ public class UserController {
     public UserLowDTO update(@RequestBody UserDTO user){
         return service.save(user);
     }
+
+    @Operation(summary = "Returns the user with the entered ID | role: [ADMIN]"
+            ,tags = "User")
     @GetMapping("/resume")
     public List<UserLowDTO>findAll(){
         return service.findAll();
     }
+    @Operation(summary = "Returns the user with the entered ID | role: [ADMIN]"
+            ,tags = "User")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List user data"),
+            @ApiResponse(responseCode = "404", description = "User Not Found!",
+            content = @Content(schema = @Schema(implementation = MessageDTO.class)))
+    })
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id){
         User user = service.findById(id);
