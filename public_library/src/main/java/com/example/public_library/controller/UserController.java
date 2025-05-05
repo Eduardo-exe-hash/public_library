@@ -25,7 +25,7 @@ public class UserController {
     public UserLowDTO update(@RequestBody UserDTO user){
         return service.save(user);
     }
-    @GetMapping("/all")
+    @GetMapping("/resume")
     public List<UserLowDTO>findAll(){
         return service.findAll();
     }
@@ -47,7 +47,7 @@ public class UserController {
     public void delete(@PathVariable Long id){
         service.delete(id);
     }
-    @GetMapping("/all")
+    @GetMapping("/complete")
     public ResponseEntity<List<UserDTO>> listAll(){
         List<User> users = service.listAll();
         List<UserDTO> userDTOS = users.stream().map(user ->{

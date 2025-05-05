@@ -18,8 +18,8 @@ public class ReserveService {
     public Reserve findById(Long id) {
         return repository.findById(id).orElse(null);
     }
-    public Reserve findByBook(String bookTitle) {
-        return repository.findByBook(bookTitle).orElse(null);
+    public Reserve findByNameBook(String nameBook) {
+        return repository.findByNameBook(nameBook).orElse(null);
     }
     public List<Reserve> listAll(){
         return repository.findAll();

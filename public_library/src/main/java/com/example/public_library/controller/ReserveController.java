@@ -54,8 +54,8 @@ public class ReserveController {
     }
 
     @GetMapping("/buscar-livro")
-    public ResponseEntity <Reserve> findByBook(@RequestParam String bookTitle){
-        Reserve reserve = service.findByBook(bookTitle);
+    public ResponseEntity <Reserve> findByBook(@RequestParam String nameBook){
+        Reserve reserve = service.findByNameBook(nameBook);
         if (reserve != null){
             return ResponseEntity.ok(reserve);
         } else {

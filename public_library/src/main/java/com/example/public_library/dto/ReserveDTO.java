@@ -1,16 +1,18 @@
 package com.example.public_library.dto;
 
+import com.example.public_library.model.ReserveStatus;
+
 import java.time.LocalDateTime;
 
 public class ReserveDTO {
     private String email;
     private String nameBook;
     private LocalDateTime reserveDate = LocalDateTime.now();
-    private String status;
+    private ReserveStatus status;
     public ReserveDTO(){
 
     }
-    public ReserveDTO(String email, String nameBook, LocalDateTime reserveDate, String status) {
+    public ReserveDTO(String email, String nameBook, LocalDateTime reserveDate, ReserveStatus status) {
         this.email = email;
         this.nameBook = nameBook;
         this.reserveDate = reserveDate;
@@ -41,11 +43,11 @@ public class ReserveDTO {
         this.reserveDate = reserveDate;
     }
 
-    public String getStatus() {
+    public ReserveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ReserveStatus status) {
         this.status = status;
     }
 }

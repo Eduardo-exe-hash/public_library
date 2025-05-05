@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ReserveRepository extends JpaRepository<Reserve,Long> {
-    Optional<Reserve>findByBook(String bookTitle);
+    Optional<Reserve>findByNameBook(String namebook);
 }

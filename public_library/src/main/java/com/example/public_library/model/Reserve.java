@@ -17,11 +17,11 @@ public class Reserve {
     private LocalDateTime reserveDate = LocalDateTime.now();
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private ReserveStatus status;
     public Reserve(){
 
     }
-    public Reserve(int id, String email, String nameBook,LocalDateTime reserveDate, String status) {
+    public Reserve(int id, String email, String nameBook,LocalDateTime reserveDate, ReserveStatus status) {
         this.id = id;
         this.email = email;
         this.nameBook = nameBook;
@@ -61,11 +61,11 @@ public class Reserve {
         this.reserveDate = reserveDate;
     }
 
-    public String getStatus() {
+    public ReserveStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ReserveStatus status) {
         this.status = status;
     }
 }

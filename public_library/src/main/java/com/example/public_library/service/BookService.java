@@ -2,7 +2,6 @@ package com.example.public_library.service;
 import com.example.public_library.dto.BookLowDTO;
 import com.example.public_library.model.Book;
 import com.example.public_library.repository.BookRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +13,6 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
     public Book save(Book book){
         return bookRepository.save(book);
     }
@@ -24,10 +21,10 @@ public class BookService {
     }
 
     public Book findByTitle(String title){
-        return bookRepository.findByName(title).orElse(null);
+        return bookRepository.findByTitle(title).orElse(null);
     }
-    public Book findAuthor(String author){
-        return bookRepository.findAuthor(author).orElse(null);
+    public Book findByAuthor(String author){
+        return bookRepository.findByAuthor(author).orElse(null);
     }
     public List<Book> listAll(){
         return bookRepository.findAll();

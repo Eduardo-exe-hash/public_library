@@ -37,7 +37,7 @@ public class BookController {
     }
     @GetMapping("/busca-autor")
     public Book findAuthor(@RequestParam String author){
-        return service.findAuthor(author);
+        return service.findByAuthor(author);
     }
     @GetMapping
     public List<BookLowDTO> listAllow(){
