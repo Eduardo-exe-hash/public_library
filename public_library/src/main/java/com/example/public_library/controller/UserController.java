@@ -26,7 +26,7 @@ public class UserController {
     public UserLowDTO save(@RequestBody UserDTO user){
         return service.save(user);
     }
-    @PutMapping
+    @PutMapping("/{id}")
     public UserLowDTO update(@RequestBody UserDTO user){
         return service.save(user);
     }

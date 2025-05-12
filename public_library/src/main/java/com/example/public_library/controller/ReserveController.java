@@ -52,6 +52,11 @@ public class ReserveController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/test-email-password")
+    public ResponseEntity<String> testEmailPassword() {
+        String password = System.getenv("EMAIL_PASSWORD");
+        return ResponseEntity.ok("EMAIL_PASSWORD: " + (password != null ? "Carregada com sucesso" : "Não encontrada"));
+    }
 
     @GetMapping("/buscar-livro")
     public ResponseEntity <Reserve> findByBook(@RequestParam String nameBook){
@@ -65,6 +70,10 @@ public class ReserveController {
     @GetMapping
     public List<Reserve> listAll(){
         return service.listAll();
+    }
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id){
+        service.deleteById(id);
     }
 }
 

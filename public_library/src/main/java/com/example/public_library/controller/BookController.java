@@ -43,4 +43,8 @@ public class BookController {
     public List<BookLowDTO> listAllow(){
         return service.listAllow();
     }
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id){
+        service.deleteById(id);
+    }
 }

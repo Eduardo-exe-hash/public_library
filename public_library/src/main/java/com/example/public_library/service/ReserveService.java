@@ -24,4 +24,7 @@ public class ReserveService {
     public List<Reserve> listAll(){
         return repository.findAll();
     }
+    public void deleteById(Long id){
+        repository.deleteById(id);
+    }
 }

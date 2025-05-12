@@ -18,9 +18,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<MessageDTO> handleException(Exception ex) {
-        logger.error("Exception não tratada: ", ex);
+        logger.error("Unhandled exception: ", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new MessageDTO("Exception não tratada: " + ex.toString(),
+                .body(new MessageDTO("Unhandled exception: " + ex.toString(),
                         "public_library.exception"));
     }
 }

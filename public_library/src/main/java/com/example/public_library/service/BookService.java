@@ -40,4 +40,7 @@ public class BookService {
             return dto;
         }).collect(Collectors.toList());
     }
+    public void deleteById(Long id){
+        bookRepository.deleteById(id);
+    }
 }
