@@ -27,10 +27,10 @@ public class UserController {
     public UserLowDTO save(@RequestBody UserDTO user){
         return service.save(user);
     }
-    @Operation(summary = "Update Reserve data", tags = "Reserve")
+    @Operation(summary = "Update User data", tags = "User")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Reserve updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Reserve not found",
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content(schema = @Schema(implementation = MessageDTO.class)))
     })
     @PutMapping("/{id}")
@@ -75,9 +75,9 @@ public class UserController {
     public void delete(@PathVariable Long id){
         service.delete(id);
     }
-    @Operation(summary = "List all Reserves", tags = "Reserve")
+    @Operation(summary = "List all Users", tags = "User")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of Publishers returned")
+            @ApiResponse(responseCode = "200", description = "List of User(s) returned")
     })
     @GetMapping("/complete")
     public ResponseEntity<List<UserDTO>> listAll(){

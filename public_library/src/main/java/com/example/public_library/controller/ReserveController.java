@@ -99,10 +99,10 @@ public class ReserveController {
     public ReserveLowDTO update(@RequestBody ReserveDTO reserve){
         return service.update(reserve);
     }
-    @Operation(summary = "Delete Publisher by ID", tags = "Publisher")
+    @Operation(summary = "Delete Reserve by ID", tags = "Reserve")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Publisher deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Publisher not found",
+            @ApiResponse(responseCode = "204", description = "Reserve deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Reserve not found",
                     content = @Content(schema = @Schema(implementation = MessageDTO.class)))
     })
     @DeleteMapping("/{id}")
