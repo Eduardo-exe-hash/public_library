@@ -1,7 +1,12 @@
 package com.example.public_library.service;
+import com.example.public_library.dto.BookDTO;
 import com.example.public_library.dto.BookLowDTO;
+import com.example.public_library.dto.UserDTO;
+import com.example.public_library.dto.UserLowDTO;
 import com.example.public_library.model.Book;
+import com.example.public_library.model.User;
 import com.example.public_library.repository.BookRepository;
+import com.example.public_library.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +28,8 @@ public class BookService {
     public Book findByTitle(String title){
         return bookRepository.findByTitle(title).orElse(null);
     }
-    public Book findByAuthor(String author){
-        return bookRepository.findByAuthor(author).orElse(null);
+    public List<Book> findByAuthor(String author){
+        return bookRepository.findByAuthor(author);
     }
     public List<Book> listAll(){
         return bookRepository.findAll();
@@ -39,6 +44,12 @@ public class BookService {
             dto.setAuthor(book.getAuthor());
             return dto;
         }).collect(Collectors.toList());
+    }
+    public BookLowDTO update(BookDTO bookDTO){
+        Book book = bookRepository.findById(bookDTO.getId()).orElseThrow(()-> new RuntimeException("Book Not Found"));
+        book.setTitle(bookDTO.getTitle());
+        Book updated = bookRepository.save(book);
+        return MapperUtil.parseObject(updated,BookLowDTO.class);
     }
     public void deleteById(Long id){
         bookRepository.deleteById(id);

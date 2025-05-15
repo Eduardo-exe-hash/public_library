@@ -5,6 +5,7 @@ import com.example.public_library.model.ReserveStatus;
 import java.time.LocalDateTime;
 
 public class ReserveDTO {
+    private Long id;
     private String email;
     private String nameBook;
     private LocalDateTime reserveDate = LocalDateTime.now();
@@ -12,11 +13,12 @@ public class ReserveDTO {
     public ReserveDTO(){
 
     }
-    public ReserveDTO(String email, String nameBook, LocalDateTime reserveDate, ReserveStatus status) {
+    public ReserveDTO(String email, String nameBook, LocalDateTime reserveDate, ReserveStatus status, Long id) {
         this.email = email;
         this.nameBook = nameBook;
         this.reserveDate = reserveDate;
         this.status = status;
+        this.id = id;
     }
 
     public String getEmail() {
@@ -49,5 +51,13 @@ public class ReserveDTO {
 
     public void setStatus(ReserveStatus status) {
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

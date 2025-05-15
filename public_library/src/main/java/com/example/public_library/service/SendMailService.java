@@ -14,7 +14,7 @@ public class SendMailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Confirmation of the Book Reserve");
-        message.setText("Your Amount has been Sucessful");
+        message.setText("Your Book Reservation has been Sucessful");
 
         mailSender.send(message);
     }

@@ -22,13 +22,20 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private UserService service;
+
     @PostMapping
     public UserLowDTO save(@RequestBody UserDTO user){
         return service.save(user);
     }
+    @Operation(summary = "Update Reserve data", tags = "Reserve")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Reserve updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Reserve not found",
+                    content = @Content(schema = @Schema(implementation = MessageDTO.class)))
+    })
     @PutMapping("/{id}")
     public UserLowDTO update(@RequestBody UserDTO user){
-        return service.save(user);
+        return service.update(user);
     }
 
     @Operation(summary = "Returns the user with the entered ID | role: [ADMIN]"
@@ -58,10 +65,20 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @Operation(summary = "Delete User by ID", tags = "User")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = MessageDTO.class)))
+    })
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         service.delete(id);
     }
+    @Operation(summary = "List all Reserves", tags = "Reserve")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "List of Publishers returned")
+    })
     @GetMapping("/complete")
     public ResponseEntity<List<UserDTO>> listAll(){
         List<User> users = service.listAll();

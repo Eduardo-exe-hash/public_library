@@ -19,6 +19,13 @@ public class UserService {
         var userSaved = userRepository.save(userEntity);
         return MapperUtil.parseObject(userSaved, UserLowDTO.class);
     }
+    public UserLowDTO update(UserDTO userDTO){
+        User user = userRepository.findById(userDTO.getId()).orElseThrow(()-> new RuntimeException("User Not Found"));
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        User updated = userRepository.save(user);
+        return MapperUtil.parseObject(updated,UserLowDTO.class);
+    }
     public List<UserLowDTO> findAll(){
         var listUsers = userRepository.findAll();
         return MapperUtil.parseListObjects(listUsers,UserLowDTO.class);
