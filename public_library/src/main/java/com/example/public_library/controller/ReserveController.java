@@ -83,7 +83,7 @@ public class ReserveController {
     }
     @Operation(summary = "List all Reserves", tags = "Reserve")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of Publishers returned")
+            @ApiResponse(responseCode = "200", description = "List of Reserves returned")
     })
     @GetMapping
     public List<Reserve> listAll(){
